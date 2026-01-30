@@ -250,7 +250,6 @@
       line-height: 1.35;
     }
 
-    /* Slots */
     .slots{
       display:flex;
       flex-direction: column;
@@ -323,7 +322,6 @@
     .slotBadge.bad{ border-color: rgba(255,107,107,0.55); background: rgba(255,107,107,0.12); color: rgba(255,255,255,0.92); }
     .slotBadge.warn{ border-color: rgba(255,204,102,0.50); background: rgba(255,204,102,0.12); color: rgba(255,255,255,0.92); }
 
-    /* Cards */
     .card{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.06);
@@ -405,88 +403,112 @@
       white-space: nowrap;
     }
 
-    /* Overlay modal, fixed readability */
+    /* ===== SOLID FINALE MODAL (NO TRANSPARENCY) ===== */
     .overlay{
       position: fixed;
-      inset:0;
-      background: rgba(0,0,0,0.80);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding: 18px;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
       z-index: 30;
     }
-    .overlay.show{ display:flex; }
+    .overlay.show{ display: flex; }
 
     .modal{
       width: min(900px, 100%);
-      max-height: min(86vh, 780px);
-      overflow: hidden;
+      max-height: 85vh;
+      background: #101426;
       border-radius: 22px;
-      border:1px solid rgba(255,255,255,0.16);
-      background: rgba(16, 20, 38, 0.97);
-      box-shadow: 0 30px 90px rgba(0,0,0,0.75);
+      border: 1px solid #2a2f55;
+      box-shadow: 0 35px 90px rgba(0,0,0,0.9);
+      overflow: hidden;
+      animation: popIn 180ms ease-out;
     }
+
+    @keyframes popIn{
+      from{ transform: scale(0.96); opacity: 0; }
+      to{ transform: scale(1); opacity: 1; }
+    }
+
     .modalHeader{
-      padding: 16px 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.14);
-      display:flex;
-      align-items:center;
+      padding: 18px 20px;
+      background: #0b1020;
+      border-bottom: 1px solid #2a2f55;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
     }
-    .modalHeader h3{ margin:0; font-size: 16px; }
+
+    .modalHeader h3{
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
     .modalBody{
-      padding: 16px 18px 18px;
-      overflow: auto;
+      padding: 18px 20px 20px;
+      overflow-y: auto;
+      color: #ffffff;
     }
 
     .scenario{
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.06);
+      background: #161b3a;
+      border: 1px solid #2f3566;
       border-radius: 18px;
-      padding: 12px 14px;
-      margin-bottom: 12px;
-      color: rgba(255,255,255,0.94);
+      padding: 14px 16px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      line-height: 1.45;
+      color: #ffffff;
     }
 
     .choices{
-      display:grid;
+      display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 12px;
     }
     @media (max-width: 720px){
       .choices{ grid-template-columns: 1fr; }
     }
 
     .choice{
-      border:1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.07);
+      background: #1c2250;
+      border: 1px solid #353c7a;
       border-radius: 16px;
-      padding: 12px 12px;
-      cursor:pointer;
-      transition: 120ms ease;
+      padding: 14px;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease;
       user-select:none;
     }
+
     .choice:hover{
-      background: rgba(255,255,255,0.12);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
     }
+
     .choice .ctitle{
-      font-weight: 950;
-      color: rgba(255,255,255,0.96);
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 4px;
     }
+
     .choice .cmeta{
-      font-size: 12px;
-      color: rgba(255,255,255,0.80);
-      margin-top: 4px;
+      font-size: 13px;
+      color: #d6d9ff;
       line-height: 1.35;
     }
 
-    /* Toast */
+    #finaleFeedback{
+      background: #161b3a;
+      border: 1px solid #2f3566;
+      color: #ffffff;
+    }
+
     .toast{
       position: fixed;
       left: 50%;
@@ -505,7 +527,6 @@
     }
     .toast.show{ display:block; }
 
-    /* Confetti canvas */
     #confetti{
       position: fixed;
       inset: 0;
@@ -524,9 +545,7 @@
     <div class="top">
       <div>
         <h1>Glycolysis Builder</h1>
-        <div class="sub">
-          Build the pathway. See ATP and NADH update. Finale: pyruvate fate.
-        </div>
+        <div class="sub">Build the pathway. See ATP and NADH update. Finale: pyruvate fate.</div>
       </div>
 
       <div class="bar">
@@ -547,7 +566,6 @@
     </div>
 
     <div class="grid">
-      <!-- Builder -->
       <div class="panel">
         <div class="panelHeader">
           <h2>
@@ -609,7 +627,6 @@
           </div>
 
           <div class="hr"></div>
-
           <div class="slots" id="slots"></div>
 
           <div class="status warn" id="statusBox">
@@ -619,7 +636,6 @@
         </div>
       </div>
 
-      <!-- Pool -->
       <div class="panel">
         <div class="panelHeader">
           <h2>Card pool <span class="tag">Drag or click</span></h2>
@@ -641,7 +657,6 @@
     </div>
   </div>
 
-  <!-- Finale modal -->
   <div class="overlay" id="overlay" role="dialog" aria-modal="true">
     <div class="modal">
       <div class="modalHeader">
@@ -662,9 +677,6 @@
   </div>
 
   <script>
-    // =========================
-    // TEACHER SETTINGS
-    // =========================
     const SETTINGS = {
       scorePerfectBase: 25,
       scorePerfectDecay: 5,
@@ -677,7 +689,6 @@
       confettiParticles: 130
     };
 
-    // Compact pathway (easier for your level). Glycogen mode skips HK (bypass ATP cost).
     const CARDS = [
       { id:"start_glucose", name:"Start: Glucose", meta:"Glucose is available in cytosol.", chips:["START"], onlyWhen:"glucose", effects:{} },
       { id:"start_glycogen", name:"Start: Glycogen entry", meta:"Glycogen -> G1P -> G6P. Bypasses HK ATP cost.", chips:["START","BYPASS HK"], onlyWhen:"glycogen", effects:{} },
@@ -701,7 +712,7 @@
     };
 
     const FATE_CHOICES = [
-      { id:"acetylCoA", title:"Acetyl CoA (aerobic)", meta:"Oxygen available. Pyruvate enters mitochondria (PDH) for aerobic ATP production." },
+      { id:"acetylCoA", title:"Acetyl CoA (aerobic)", meta:"Oxygen available. Pyruvate enters mitochondria for aerobic ATP production." },
       { id:"lactate", title:"Lactate (anaerobic or very high flux)", meta:"Regenerates NAD+ so glycolysis can continue when oxygen is limited or demand is very high." }
     ];
 
@@ -712,9 +723,6 @@
       { id:"allOut", prompt:"All out effort. Glycolysis is flying and oxygen delivery cannot keep up.", correct:"lactate" }
     ];
 
-    // =========================
-    // STATE
-    // =========================
     const state = {
       start: "glucose",
       mode: "study",
@@ -739,9 +747,6 @@
       confettiOn: true
     };
 
-    // =========================
-    // ELEMENTS
-    // =========================
     const el = (id) => document.getElementById(id);
 
     const scoreVal = el("scoreVal");
@@ -778,9 +783,6 @@
     const confettiCanvas = el("confetti");
     const ctxConf = confettiCanvas.getContext("2d");
 
-    // =========================
-    // UTILS
-    // =========================
     function escapeHtml(str){
       return String(str)
         .replaceAll("&", "&amp;")
@@ -840,9 +842,6 @@
       finaleFeedback.textContent = msg;
     }
 
-    // =========================
-    // CONFETTI
-    // =========================
     function resizeConfetti(){
       confettiCanvas.width = Math.floor(window.innerWidth * Math.min(2, window.devicePixelRatio || 1));
       confettiCanvas.height = Math.floor(window.innerHeight * Math.min(2, window.devicePixelRatio || 1));
@@ -903,9 +902,6 @@
       requestAnimationFrame(tick);
     }
 
-    // =========================
-    // TIMER
-    // =========================
     function formatTime(sec){
       const m = Math.floor(sec / 60);
       const s = Math.floor(sec % 60);
@@ -930,9 +926,6 @@
       state.timerHandle = 0;
     }
 
-    // =========================
-    // GAME DATA HELPERS
-    // =========================
     function getActiveCards(){
       return CARDS.filter(c => !c.onlyWhen || c.onlyWhen === state.start);
     }
@@ -955,9 +948,6 @@
       return chips;
     }
 
-    // =========================
-    // BUILD UI
-    // =========================
     function buildSlots(){
       slots.innerHTML = "";
       const order = getOrder();
@@ -1032,22 +1022,6 @@
       }
     }
 
-    function buildPool(){
-      pool.innerHTML = "";
-      const active = shuffle(getActiveCards());
-      for (const c of active){
-        pool.appendChild(makeCard(c));
-      }
-      poolCount.textContent = `${active.length} cards`;
-
-      pool.addEventListener("dragover", (e) => e.preventDefault());
-      pool.addEventListener("drop", (e) => {
-        e.preventDefault();
-        const cardId = e.dataTransfer.getData("text/plain");
-        if (cardId) moveCardToPool(cardId, true);
-      });
-    }
-
     function makeCard(card){
       const d = document.createElement("div");
       d.className = "card";
@@ -1083,6 +1057,22 @@
       return d;
     }
 
+    function buildPool(){
+      pool.innerHTML = "";
+      const active = shuffle(getActiveCards());
+      for (const c of active){
+        pool.appendChild(makeCard(c));
+      }
+      poolCount.textContent = `${active.length} cards`;
+
+      pool.addEventListener("dragover", (e) => e.preventDefault());
+      pool.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const cardId = e.dataTransfer.getData("text/plain");
+        if (cardId) moveCardToPool(cardId, true);
+      });
+    }
+
     function refreshSelectionUI(){
       document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
       if (state.selectedCardId){
@@ -1113,54 +1103,32 @@
       badge.textContent = text;
     }
 
-    // =========================
-    // HISTORY AND UNDO
-    // =========================
     function pushHistory(entry){
       state.history.push(entry);
       if (state.history.length > 80) state.history.shift();
     }
 
-    function undo(){
-      const h = state.history.pop();
-      if (!h){
-        showToast("Nothing to undo.");
-        return;
-      }
-
-      if (h.type === "place"){
-        if (h.toSlotIndex != null){
-          clearSlot(h.toSlotIndex);
-        }
-        if (h.fromSlotIndex != null){
-          placeCardIntoSlot(h.cardId, h.fromSlotIndex, "undo", true);
-        } else {
-          moveCardToPool(h.cardId, false);
-        }
-        if (h.bumpedCardId){
-          placeCardIntoSlot(h.bumpedCardId, h.toSlotIndex, "undo", true);
-        }
-      }
-
-      if (h.type === "toPool"){
-        placeCardIntoSlot(h.cardId, h.fromSlot, "undo", true);
-      }
-
-      computeEnergyAndProgress();
-      state.selectedCardId = null;
-      refreshSelectionUI();
-      showToast("Undo.");
-      beep("click");
-    }
-
-    // =========================
-    // PLACE AND MOVE
-    // =========================
     function clearSlot(slotIndex){
       const slotContent = document.querySelector(`.slot[data-slot-index="${slotIndex}"] [data-dropzone="slot"]`);
       if (slotContent) slotContent.innerHTML = "";
       state.placedBySlot[slotIndex] = null;
       setSlotBadge(slotIndex, "warn", "Empty");
+    }
+
+    function moveCardToPool(cardId, clearFromSlot){
+      const cardEl = findCardElement(cardId);
+      if (!cardEl) return;
+
+      const slotIndex = findCardSlotIndex(cardId);
+      if (slotIndex !== -1 && clearFromSlot){
+        clearSlot(slotIndex);
+      }
+
+      pool.prepend(cardEl);
+      if (state.selectedCardId === cardId){
+        state.selectedCardId = null;
+        refreshSelectionUI();
+      }
     }
 
     function placeCardIntoSlot(cardId, slotIndex, source, silent){
@@ -1169,13 +1137,11 @@
 
       timerStart();
 
-      // If already in another slot, clear that slot
       const existingSlot = findCardSlotIndex(cardId);
       if (existingSlot !== -1){
         clearSlot(existingSlot);
       }
 
-      // If target has a card, bump to pool
       const existingInTarget = state.placedBySlot[slotIndex];
       let bumpedCardId = null;
       if (existingInTarget){
@@ -1184,7 +1150,6 @@
         clearSlot(slotIndex);
       }
 
-      // Place
       state.placedBySlot[slotIndex] = cardId;
       const slotContent = document.querySelector(`.slot[data-slot-index="${slotIndex}"] [data-dropzone="slot"]`);
       slotContent.innerHTML = "";
@@ -1214,25 +1179,6 @@
       computeEnergyAndProgress();
     }
 
-    function moveCardToPool(cardId, clearFromSlot){
-      const cardEl = findCardElement(cardId);
-      if (!cardEl) return;
-
-      const slotIndex = findCardSlotIndex(cardId);
-      if (slotIndex !== -1 && clearFromSlot){
-        clearSlot(slotIndex);
-      }
-
-      pool.prepend(cardEl);
-      if (state.selectedCardId === cardId){
-        state.selectedCardId = null;
-        refreshSelectionUI();
-      }
-    }
-
-    // =========================
-    // ENERGY AND PROGRESS
-    // =========================
     function computeEnergyAndProgress(){
       let atpUsed = 0, atpMade = 0, nadh = 0;
 
@@ -1264,9 +1210,6 @@
       startNote.textContent = START_NOTES[state.start];
     }
 
-    // =========================
-    // SCORING AND BADGES
-    // =========================
     function updateScore(delta){
       state.score += delta;
       if (state.score < 0) state.score = 0;
@@ -1280,9 +1223,6 @@
       showToast("Badge earned: " + key);
     }
 
-    // =========================
-    // CHECK PATHWAY
-    // =========================
     function checkPathway(){
       const correct = getOrder();
       const placed = state.placedBySlot;
@@ -1324,9 +1264,6 @@
       }
     }
 
-    // =========================
-    // HINTS
-    // =========================
     function hint(){
       if (state.hintsLeft <= 0){
         showToast("No hints left.");
@@ -1348,9 +1285,6 @@
       beep("click");
     }
 
-    // =========================
-    // FINALE
-    // =========================
     function pickScenario(){
       return SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)];
     }
@@ -1361,7 +1295,7 @@
       state.currentScenario = pickScenario();
       scenarioBox.innerHTML = `
         <div style="font-weight:950; margin-bottom: 6px;">Scenario</div>
-        <div style="color: rgba(255,255,255,0.88); line-height: 1.45;">${escapeHtml(state.currentScenario.prompt)}</div>
+        <div style="color: rgba(255,255,255,0.92); line-height: 1.45;">${escapeHtml(state.currentScenario.prompt)}</div>
       `;
 
       choicesEl.innerHTML = "";
@@ -1399,9 +1333,6 @@
       }
     }
 
-    // =========================
-    // MODE AND RESET
-    // =========================
     function setStart(start){
       state.start = start;
       state.attempts = 0;
@@ -1464,9 +1395,38 @@
       beep("click");
     }
 
-    // =========================
-    // EVENTS
-    // =========================
+    function undo(){
+      const h = state.history.pop();
+      if (!h){
+        showToast("Nothing to undo.");
+        return;
+      }
+
+      if (h.type === "place"){
+        if (h.toSlotIndex != null){
+          clearSlot(h.toSlotIndex);
+        }
+        if (h.fromSlotIndex != null){
+          placeCardIntoSlot(h.cardId, h.fromSlotIndex, "undo", true);
+        } else {
+          moveCardToPool(h.cardId, false);
+        }
+        if (h.bumpedCardId){
+          placeCardIntoSlot(h.bumpedCardId, h.toSlotIndex, "undo", true);
+        }
+      }
+
+      if (h.type === "toPool"){
+        placeCardIntoSlot(h.cardId, h.fromSlot, "undo", true);
+      }
+
+      computeEnergyAndProgress();
+      state.selectedCardId = null;
+      refreshSelectionUI();
+      showToast("Undo.");
+      beep("click");
+    }
+
     el("helpBtn").addEventListener("click", () => {
       const showing = helpWrap.style.display !== "none";
       helpWrap.style.display = showing ? "none" : "block";
@@ -1488,7 +1448,6 @@
 
     el("glucoseToggle").addEventListener("click", () => setStart("glucose"));
     el("glycogenToggle").addEventListener("click", () => setStart("glycogen"));
-
     el("studyToggle").addEventListener("click", () => setMode("study"));
     el("challengeToggle").addEventListener("click", () => setMode("challenge"));
 
@@ -1514,7 +1473,6 @@
       if (k === "escape") overlay.classList.remove("show");
     });
 
-    // Click background clears selection
     window.addEventListener("click", () => {
       if (state.selectedCardId){
         state.selectedCardId = null;
@@ -1522,9 +1480,6 @@
       }
     });
 
-    // =========================
-    // INIT
-    // =========================
     function init(){
       resizeConfetti();
       el("soundBtn").textContent = "Sound: On";
