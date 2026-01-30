@@ -2,60 +2,987 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Glycolysis Game</title>
+  <title>Glycolysis Builder Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    body {
-      margin: 0;
+    :root{
+      --bg1:#0b1020;
+      --bg2:#121a33;
+      --card: rgba(255,255,255,0.06);
+      --card2: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.72);
+      --gold:#c9b037;
+      --good:#45d483;
+      --bad:#ff6b6b;
+      --warn:#ffcc66;
+      --shadow: 0 22px 52px rgba(0,0,0,0.45);
+      --radius: 18px;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      background: #0b1020;
-      color: white;
-      display: flex;
+      color: var(--text);
+      background: radial-gradient(1200px 700px at 20% 0%, #1a2452 0%, var(--bg1) 48%, #070a14 100%);
+      min-height:100vh;
+      padding: 22px;
+    }
+
+    .wrap{ max-width: 1150px; margin: 0 auto; }
+
+    .top{
+      display:flex; gap:14px; align-items:flex-end; justify-content: space-between;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .title{
+      display:flex; flex-direction: column; gap: 6px;
+    }
+    h1{
+      margin:0;
+      font-size: 26px;
+      letter-spacing: -0.4px;
+    }
+    .sub{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.35;
+      max-width: 760px;
+    }
+
+    .pillbar{ display:flex; gap:10px; flex-wrap: wrap; align-items: center; }
+    .pill{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      padding: 10px 12px;
+      border-radius: 999px;
+      display:flex;
+      gap:10px;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
+      font-size: 14px;
     }
-
-    .card {
-      background: #121a33;
-      padding: 32px;
-      border-radius: 16px;
-      max-width: 800px;
-      width: 100%;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    }
-
-    h1 {
-      margin-top: 0;
-      color: #c9b037;
-    }
-
-    button {
-      background: #c9b037;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-weight: 600;
+    .pill strong{ color: white; font-weight: 700; }
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: white;
+      padding: 10px 12px;
+      border-radius: 14px;
       cursor: pointer;
+      font-weight: 650;
+    }
+    .btn:hover{ background: rgba(255,255,255,0.10); }
+    .btn.primary{
+      background: rgba(201,176,55,0.92);
+      color: #0b1020;
+      border-color: rgba(201,176,55,0.8);
+    }
+    .btn.primary:hover{ background: rgba(201,176,55,1); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 14px;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
     }
 
-    button:hover {
-      opacity: 0.9;
+    .panel{
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panelHeader{
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      display:flex; align-items:center; justify-content: space-between; gap: 12px;
+    }
+    .panelHeader h2{
+      margin:0;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+      color: rgba(255,255,255,0.95);
+      display:flex; gap: 10px; align-items:center;
+    }
+    .tag{
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+    }
+    .panelBody{ padding: 14px 16px 16px; }
+
+    .row{
+      display:flex; gap: 10px; flex-wrap: wrap; align-items:center;
+    }
+
+    .toggleGroup{
+      display:flex;
+      border:1px solid var(--border);
+      border-radius: 999px;
+      overflow:hidden;
+    }
+    .toggle{
+      padding: 9px 12px;
+      cursor:pointer;
+      user-select:none;
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+      border-right: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .toggle:last-child{ border-right: none; }
+    .toggle.active{
+      background: rgba(201,176,55,0.92);
+      color: #0b1020;
+    }
+
+    .hr{ height:1px; background: var(--border); margin: 12px 0; }
+
+    .instruction{
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    /* Drag areas */
+    .slots{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .slot{
+      border:1px dashed rgba(255,255,255,0.22);
+      background: rgba(0,0,0,0.18);
+      border-radius: 16px;
+      padding: 10px 12px;
+      min-height: 56px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: 120ms ease;
+    }
+    .slot.dragOver{
+      border-color: rgba(201,176,55,0.9);
+      background: rgba(201,176,55,0.12);
+      transform: translateY(-1px);
+    }
+    .slot .label{
+      font-weight: 750;
+      font-size: 12px;
+      color: rgba(255,255,255,0.80);
+    }
+    .slot .content{
+      flex:1;
+      display:flex;
+      justify-content: flex-end;
+    }
+
+    .card{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 10px 12px;
+      display:flex;
+      flex-direction: column;
+      gap: 5px;
+      cursor: grab;
+      user-select:none;
+    }
+    .card:active{ cursor: grabbing; }
+    .card .name{ font-weight: 800; font-size: 14px; color: rgba(255,255,255,0.95); }
+    .card .meta{ font-size: 12px; color: rgba(255,255,255,0.68); line-height: 1.35; }
+
+    .pool{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .poolGrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .status{
+      margin-top: 10px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,0.18);
+      border-radius: 16px;
+      padding: 10px 12px;
+      color: rgba(255,255,255,0.84);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .status.good{ border-color: rgba(69,212,131,0.45); background: rgba(69,212,131,0.10); }
+    .status.bad{ border-color: rgba(255,107,107,0.5); background: rgba(255,107,107,0.10); }
+    .status.warn{ border-color: rgba(255,204,102,0.45); background: rgba(255,204,102,0.10); }
+
+    .mini{
+      font-size: 12px;
+      color: rgba(255,255,255,0.70);
+    }
+
+    /* Finale modal */
+    .overlay{
+      position: fixed;
+      inset:0;
+      background: rgba(0,0,0,0.60);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      z-index: 30;
+    }
+    .overlay.show{ display:flex; }
+    .modal{
+      width: min(920px, 100%);
+      border-radius: 22px;
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
+      box-shadow: 0 30px 70px rgba(0,0,0,0.6);
+      overflow:hidden;
+    }
+    .modalHeader{
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      display:flex; align-items:center; justify-content: space-between; gap: 10px;
+    }
+    .modalHeader h3{ margin:0; font-size: 16px; }
+    .modalBody{ padding: 16px 18px 18px; }
+    .scenario{
+      border:1px solid var(--border);
+      background: rgba(0,0,0,0.18);
+      border-radius: 18px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+    .choices{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 720px){
+      .choices{ grid-template-columns: 1fr; }
+    }
+    .choice{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 12px 12px;
+      cursor:pointer;
+      transition: 120ms ease;
+    }
+    .choice:hover{ background: rgba(255,255,255,0.10); transform: translateY(-1px); }
+    .choice .ctitle{ font-weight: 850; }
+    .choice .cmeta{ font-size: 12px; color: rgba(255,255,255,0.70); margin-top: 4px; line-height: 1.35; }
+
+    .footerNote{
+      margin-top: 10px;
+      color: rgba(255,255,255,0.70);
+      font-size: 12px;
+      line-height: 1.35;
     }
   </style>
 </head>
-<body>
-  <div class="card">
-    <h1>Glycolysis: The ATP Gamble</h1>
-    <p>
-      Welcome. You must invest ATP to survive the pathway.
-      Choose wisely.
-    </p>
 
-    <button onclick="alert('Game logic goes here next!')">
-      Start Glycolysis
-    </button>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="title">
+        <h1>Glycolysis Builder</h1>
+        <div class="sub">
+          Drag steps into the correct order. Choose whether you start from glucose or glycogen.
+          Then decide the fate of pyruvate based on the scenario.
+        </div>
+      </div>
+
+      <div class="pillbar">
+        <div class="pill"><strong id="score">Score:</strong> <span id="scoreVal">0</span></div>
+        <div class="pill"><strong id="modeLabel">Start:</strong> <span id="modeVal">Glucose</span></div>
+        <button class="btn" id="hintBtn">Hint</button>
+        <button class="btn" id="resetBtn">Reset</button>
+        <button class="btn primary" id="checkBtn">Check Pathway</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panelHeader">
+          <h2>Build the pathway <span class="tag" id="phaseTag">Investment then Payoff</span></h2>
+          <div class="tag mini">Drag cards into slots</div>
+        </div>
+        <div class="panelBody">
+          <div class="row">
+            <div class="toggleGroup" aria-label="Start substrate toggle">
+              <div class="toggle active" id="glucoseToggle">Glucose</div>
+              <div class="toggle" id="glycogenToggle">Glycogen</div>
+            </div>
+            <div class="mini" id="startNote" style="margin-left: 6px;">
+              Starting from glucose: net ATP = 2 (glycolysis only).
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="instruction">
+            Place the steps in order. Focus on: where ATP is used, where ATP is made, and where NADH is made.
+          </div>
+
+          <div class="slots" id="slots"></div>
+
+          <div class="status warn" id="statusBox">
+            Build your pathway, then click “Check Pathway.” When you pass, you unlock the pyruvate fate finale.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panelHeader">
+          <h2>Card pool <span class="tag">Shuffle each reset</span></h2>
+          <div class="tag mini" id="poolNote">8 cards</div>
+        </div>
+        <div class="panelBody">
+          <div class="instruction">
+            Drag a card into a slot. You can move cards between slots, or drag back into the pool.
+          </div>
+
+          <div class="pool">
+            <div class="poolGrid" id="pool"></div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="instruction">
+            <strong>Teacher controls:</strong> edit the “CARDS” list in the script to rename steps,
+            adjust hints, or change what you consider “correct.”
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <!-- Finale modal -->
+  <div class="overlay" id="overlay">
+    <div class="modal">
+      <div class="modalHeader">
+        <h3>Finale: fate of pyruvate</h3>
+        <button class="btn" id="closeOverlayBtn">Close</button>
+      </div>
+      <div class="modalBody">
+        <div class="scenario" id="scenarioBox"></div>
+
+        <div class="choices" id="choices"></div>
+
+        <div class="status warn" id="finaleFeedback" style="margin-top: 12px;">
+          Pick the best fate for pyruvate based on the scenario.
+        </div>
+
+        <div class="footerNote">
+          Note: this game focuses on conceptual matching. You can easily swap in your preferred wording
+          for lactate, acetyl-CoA, gluconeogenesis, alanine cycle, and so on.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    // DATA YOU WILL EDIT MOST
+    // =========================
+
+    // Core steps (kept compact to make a clean drag game)
+    // If you want the full 10-step glycolysis pathway, say so and I will expand this version.
+    const CARDS = [
+      {
+        id: "hk",
+        name: "Hexokinase (or Glucokinase)",
+        meta: "Glucose -> Glucose-6-phosphate | ATP used (ATP -> ADP) | Traps glucose in cell",
+        key: "HK",
+        tags: ["ATP-USE"]
+      },
+      {
+        id: "pfk",
+        name: "PFK-1",
+        meta: "Fructose-6-phosphate -> Fructose-1,6-bisphosphate | ATP used | Major control point",
+        key: "PFK1",
+        tags: ["ATP-USE", "CONTROL"]
+      },
+      {
+        id: "split",
+        name: "Split and rearrange",
+        meta: "F-1,6-BP -> 2 x triose phosphates | Sets up payoff phase",
+        key: "SPLIT",
+        tags: []
+      },
+      {
+        id: "gapdh",
+        name: "GAPDH",
+        meta: "G3P -> 1,3-BPG | NAD+ -> NADH (electron capture)",
+        key: "GAPDH",
+        tags: ["NADH"]
+      },
+      {
+        id: "pgk",
+        name: "Phosphoglycerate kinase",
+        meta: "1,3-BPG -> 3-PG | ATP made (ADP -> ATP) | Substrate-level phosphorylation",
+        key: "PGK",
+        tags: ["ATP-MAKE"]
+      },
+      {
+        id: "pk",
+        name: "Pyruvate kinase",
+        meta: "PEP -> Pyruvate | ATP made | Irreversible step",
+        key: "PK",
+        tags: ["ATP-MAKE", "IRREV"]
+      },
+      // "Start cards" that change with glucose vs glycogen
+      {
+        id: "start_glucose",
+        name: "Start: Glucose enters glycolysis",
+        meta: "Glucose available in cytosol | Proceed to HK step",
+        key: "START_GLUCOSE",
+        tags: ["START"],
+        onlyWhen: "glucose"
+      },
+      {
+        id: "start_glycogen",
+        name: "Start: Glycogen -> G1P -> G6P",
+        meta: "Glycogen phosphorylase route | Bypasses hexokinase ATP cost (glycolysis net ATP increases by 1)",
+        key: "START_GLYCOGEN",
+        tags: ["START"],
+        onlyWhen: "glycogen"
+      }
+    ];
+
+    // Correct slot order for each start mode
+    // Keeping 6 slots for a clean game. The start card is slot 1.
+    const ORDER = {
+      glucose: ["start_glucose", "hk", "pfk", "split", "gapdh", "pgk", "pk"],
+      glycogen: ["start_glycogen", "pfk", "split", "gapdh", "pgk", "pk"] // HK omitted in this simplified mode
+    };
+
+    // Energy accounting summary for each mode (glycolysis only)
+    // Glucose: net 2 ATP, 2 NADH
+    // Glycogen: net 3 ATP, 2 NADH (because you skip the HK ATP cost)
+    const ENERGY = {
+      glucose: { netATP: 2, nadh: 2, note: "Starting from glucose: invest 2 ATP, make 4 ATP, net 2 ATP. NADH = 2." },
+      glycogen: { netATP: 3, nadh: 2, note: "Starting from glycogen: you bypass the HK ATP cost, so net ATP increases by 1 (net 3). NADH = 2." }
+    };
+
+    // Finale scenarios
+    const SCENARIOS = [
+      {
+        id: "highO2",
+        prompt: "Oxygen is plentiful and mitochondria are working hard. You want maximum ATP yield.",
+        correct: "acetylCoA",
+      },
+      {
+        id: "lowO2",
+        prompt: "Very low oxygen during an all-out sprint. You must regenerate NAD+ quickly to keep glycolysis running.",
+        correct: "lactate",
+      },
+      {
+        id: "liverCori",
+        prompt: "You are in active muscle producing lactate, and the liver will help recycle it later (Cori cycle idea). What is the immediate fate in muscle right now?",
+        correct: "lactate",
+      },
+      {
+        id: "fastingLiver",
+        prompt: "You are in the liver during fasting. Carbon can be routed back toward glucose production later.",
+        correct: "gluconeogenesis",
+      },
+      {
+        id: "alanine",
+        prompt: "You are in muscle and need to move nitrogen safely while exporting carbon skeletons to the liver (alanine cycle).",
+        correct: "alanine",
+      }
+    ];
+
+    const FATE_CHOICES = [
+      {
+        id: "acetylCoA",
+        title: "Acetyl-CoA -> TCA cycle",
+        meta: "Aerobic conditions. Pyruvate enters mitochondria (PDH) for big ATP yield."
+      },
+      {
+        id: "lactate",
+        title: "Lactate (LDH)",
+        meta: "Anaerobic or very high flux. Regenerates NAD+ so glycolysis can continue."
+      },
+      {
+        id: "gluconeogenesis",
+        title: "Toward glucose (gluconeogenesis route)",
+        meta: "Mostly liver. Pyruvate can become OAA then glucose, depending on hormonal state."
+      },
+      {
+        id: "alanine",
+        title: "Alanine cycle",
+        meta: "Muscle exports alanine to liver to move nitrogen and carbon."
+      }
+    ];
+
+    // =========================
+    // GAME STATE
+    // =========================
+
+    const state = {
+      mode: "glucose",
+      score: 0,
+      attempts: 0,
+      hintLevel: 0,
+      placedBySlot: [], // array of card ids by slot index
+      unlockedFinale: false,
+      currentScenario: null,
+      finaleSolved: false
+    };
+
+    const el = (id) => document.getElementById(id);
+
+    const scoreVal = el("scoreVal");
+    const modeVal = el("modeVal");
+    const startNote = el("startNote");
+    const statusBox = el("statusBox");
+    const pool = el("pool");
+    const slots = el("slots");
+    const poolNote = el("poolNote");
+    const phaseTag = el("phaseTag");
+
+    const overlay = el("overlay");
+    const scenarioBox = el("scenarioBox");
+    const choicesEl = el("choices");
+    const finaleFeedback = el("finaleFeedback");
+
+    // =========================
+    // BUILD UI
+    // =========================
+
+    function setMode(mode){
+      state.mode = mode;
+      state.unlockedFinale = false;
+      state.currentScenario = null;
+      state.finaleSolved = false;
+      state.hintLevel = 0;
+      state.attempts = 0;
+
+      modeVal.textContent = (mode === "glucose") ? "Glucose" : "Glycogen";
+      startNote.textContent = ENERGY[mode].note;
+
+      el("glucoseToggle").classList.toggle("active", mode === "glucose");
+      el("glycogenToggle").classList.toggle("active", mode === "glycogen");
+
+      resetBoard(true);
+      setStatus("Build your pathway, then click “Check Pathway.” When you pass, you unlock the pyruvate fate finale.", "warn");
+    }
+
+    function shuffle(arr){
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function getActiveCards(){
+      return CARDS.filter(c => !c.onlyWhen || c.onlyWhen === state.mode);
+    }
+
+    function buildSlots(){
+      slots.innerHTML = "";
+      const order = ORDER[state.mode];
+      state.placedBySlot = new Array(order.length).fill(null);
+
+      for (let i = 0; i < order.length; i++){
+        const slot = document.createElement("div");
+        slot.className = "slot";
+        slot.dataset.slotIndex = String(i);
+
+        const label = document.createElement("div");
+        label.className = "label";
+        label.textContent = `Slot ${i + 1}`;
+
+        const content = document.createElement("div");
+        content.className = "content";
+        content.dataset.dropzone = "slot";
+
+        slot.appendChild(label);
+        slot.appendChild(content);
+
+        slot.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          slot.classList.add("dragOver");
+        });
+        slot.addEventListener("dragleave", () => slot.classList.remove("dragOver"));
+        slot.addEventListener("drop", (e) => {
+          e.preventDefault();
+          slot.classList.remove("dragOver");
+          const cardId = e.dataTransfer.getData("text/plain");
+          placeCardIntoSlot(cardId, i);
+        });
+
+        slots.appendChild(slot);
+      }
+    }
+
+    function buildPool(){
+      pool.innerHTML = "";
+      const active = getActiveCards();
+
+      poolNote.textContent = `${active.length} cards`;
+      phaseTag.textContent = (state.mode === "glucose") ? "Investment then Payoff" : "Glycogen entry then Payoff";
+
+      const shuffled = shuffle(active);
+      for (const c of shuffled){
+        pool.appendChild(makeCard(c));
+      }
+
+      // allow drop back into pool
+      pool.addEventListener("dragover", (e) => e.preventDefault());
+      pool.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const cardId = e.dataTransfer.getData("text/plain");
+        moveCardToPool(cardId);
+      });
+    }
+
+    function makeCard(card){
+      const d = document.createElement("div");
+      d.className = "card";
+      d.draggable = true;
+      d.dataset.cardId = card.id;
+
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = card.name;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = card.meta;
+
+      d.appendChild(name);
+      d.appendChild(meta);
+
+      d.addEventListener("dragstart", (e) => {
+        e.dataTransfer.setData("text/plain", card.id);
+        e.dataTransfer.effectAllowed = "move";
+      });
+
+      d.addEventListener("dblclick", () => {
+        // double-click removes from slot back to pool
+        const fromSlot = findCardSlotIndex(card.id);
+        if (fromSlot !== -1){
+          moveCardToPool(card.id);
+        }
+      });
+
+      return d;
+    }
+
+    function findCardElement(cardId){
+      return document.querySelector(`[data-card-id="${cardId}"]`);
+    }
+
+    function findCardSlotIndex(cardId){
+      return state.placedBySlot.findIndex(id => id === cardId);
+    }
+
+    function placeCardIntoSlot(cardId, slotIndex){
+      const cardEl = findCardElement(cardId);
+      if (!cardEl) return;
+
+      // If this card is already in another slot, clear that slot first
+      const existingSlot = findCardSlotIndex(cardId);
+      if (existingSlot !== -1){
+        state.placedBySlot[existingSlot] = null;
+        const oldSlotContent = document.querySelector(`.slot[data-slot-index="${existingSlot}"] .content`);
+        if (oldSlotContent) oldSlotContent.innerHTML = "";
+      }
+
+      // If target slot already has a card, bump it back to pool
+      const existingInTarget = state.placedBySlot[slotIndex];
+      if (existingInTarget){
+        moveCardToPool(existingInTarget);
+      }
+
+      // Place
+      state.placedBySlot[slotIndex] = cardId;
+      const slotContent = document.querySelector(`.slot[data-slot-index="${slotIndex}"] .content`);
+      slotContent.innerHTML = "";
+      slotContent.appendChild(cardEl);
+
+      // Small nudge: reduce hint level after action
+      if (state.hintLevel > 0) state.hintLevel -= 1;
+      setStatus("Nice. Keep going, then check your pathway.", "warn");
+    }
+
+    function moveCardToPool(cardId){
+      const cardEl = findCardElement(cardId);
+      if (!cardEl) return;
+
+      const slotIndex = findCardSlotIndex(cardId);
+      if (slotIndex !== -1){
+        state.placedBySlot[slotIndex] = null;
+        const slotContent = document.querySelector(`.slot[data-slot-index="${slotIndex}"] .content`);
+        if (slotContent) slotContent.innerHTML = "";
+      }
+
+      // Put at top of pool
+      pool.prepend(cardEl);
+      setStatus("Card returned to pool.", "warn");
+    }
+
+    function resetBoard(keepScore){
+      if (!keepScore){
+        state.score = 0;
+        updateScore(0);
+      }
+      buildSlots();
+      buildPool();
+    }
+
+    function updateScore(delta){
+      state.score += delta;
+      if (state.score < 0) state.score = 0;
+      scoreVal.textContent = String(state.score);
+    }
+
+    function setStatus(msg, kind){
+      statusBox.textContent = msg;
+      statusBox.classList.remove("good", "bad", "warn");
+      statusBox.classList.add(kind);
+    }
+
+    // =========================
+    // CHECK PATHWAY
+    // =========================
+
+    function checkPathway(){
+      const correct = ORDER[state.mode];
+      const placed = state.placedBySlot;
+
+      // Any empty slots?
+      const emptyCount = placed.filter(x => !x).length;
+      if (emptyCount > 0){
+        setStatus(`You still have ${emptyCount} empty slot(s). Fill them first.`, "warn");
+        updateScore(-2);
+        return;
+      }
+
+      state.attempts += 1;
+
+      // Count correctness
+      let right = 0;
+      for (let i = 0; i < correct.length; i++){
+        if (placed[i] === correct[i]) right++;
+      }
+
+      if (right === correct.length){
+        // Perfect
+        const bonus = Math.max(15, 30 - (state.attempts - 1) * 5);
+        updateScore(bonus);
+        state.unlockedFinale = true;
+
+        const e = ENERGY[state.mode];
+        setStatus(
+          `Correct. Pathway built. Bonus +${bonus}. Summary: net ATP = ${e.netATP}, NADH = ${e.nadh}. Finale unlocked.`,
+          "good"
+        );
+
+        // Immediately open finale
+        openFinale();
+      } else {
+        // Not perfect
+        const miss = correct.length - right;
+        updateScore(-4);
+        setStatus(`Not quite. You have ${right}/${correct.length} in the right slot. ${miss} misplaced. Try again.`, "bad");
+
+        // Optional light hinting on attempt
+        if (state.attempts >= 2){
+          setStatus(`Not quite. You have ${right}/${correct.length} correct. Hint: use the irreversible steps to anchor the order (HK, PFK-1, PK).`, "bad");
+        }
+      }
+    }
+
+    // =========================
+    // HINTS
+    // =========================
+
+    function hint(){
+      state.hintLevel += 1;
+
+      if (state.hintLevel === 1){
+        setStatus("Hint: Start by placing the START card first, then PFK-1 as the main control point early in the pathway.", "warn");
+        updateScore(-1);
+        return;
+      }
+      if (state.hintLevel === 2){
+        setStatus("Hint: NADH appears at GAPDH, and ATP appears at PGK and PK (substrate-level phosphorylation).", "warn");
+        updateScore(-1);
+        return;
+      }
+      setStatus("Hint: The payoff phase begins after the split. Place split before GAPDH, then ATP at PGK, then ATP at PK.", "warn");
+      updateScore(-1);
+    }
+
+    // =========================
+    // FINALE (PYRUVATE FATE)
+    // =========================
+
+    function pickScenario(){
+      const s = SCENARIOS[Math.floor(Math.random() * SCENARIOS.length)];
+      state.currentScenario = s;
+      state.finaleSolved = false;
+      return s;
+    }
+
+    function openFinale(){
+      if (!state.unlockedFinale){
+        setStatus("Finish the pathway first to unlock the finale.", "warn");
+        return;
+      }
+      const s = pickScenario();
+      scenarioBox.innerHTML = `
+        <div style="font-weight:850; margin-bottom: 6px; color: rgba(255,255,255,0.95);">Scenario</div>
+        <div style="color: rgba(255,255,255,0.80); line-height: 1.45;">${escapeHtml(s.prompt)}</div>
+      `;
+
+      choicesEl.innerHTML = "";
+      for (const c of shuffle(FATE_CHOICES)){
+        const div = document.createElement("div");
+        div.className = "choice";
+        div.innerHTML = `
+          <div class="ctitle">${escapeHtml(c.title)}</div>
+          <div class="cmeta">${escapeHtml(c.meta)}</div>
+        `;
+        div.addEventListener("click", () => chooseFate(c.id));
+        choicesEl.appendChild(div);
+      }
+
+      finaleFeedback.classList.remove("good", "bad", "warn");
+      finaleFeedback.classList.add("warn");
+      finaleFeedback.textContent = "Pick the best fate for pyruvate based on the scenario.";
+
+      overlay.classList.add("show");
+    }
+
+    function chooseFate(choiceId){
+      const s = state.currentScenario;
+      if (!s) return;
+
+      if (choiceId === s.correct){
+        if (!state.finaleSolved){
+          state.finaleSolved = true;
+          updateScore(20);
+        }
+        finaleFeedback.classList.remove("warn", "bad");
+        finaleFeedback.classList.add("good");
+
+        const explain = fateExplanation(s.correct, state.mode);
+        finaleFeedback.textContent = `Correct. +20. ${explain}`;
+      } else {
+        updateScore(-3);
+        finaleFeedback.classList.remove("warn", "good");
+        finaleFeedback.classList.add("bad");
+
+        const explain = fateWhyNot(choiceId);
+        finaleFeedback.textContent = `Not quite. -3. ${explain}`;
+      }
+    }
+
+    function fateExplanation(correctId, mode){
+      if (correctId === "acetylCoA"){
+        return "With adequate oxygen, pyruvate is routed through PDH to acetyl-CoA to feed the TCA cycle and oxidative phosphorylation.";
+      }
+      if (correctId === "lactate"){
+        return "When oxygen is limited or glycolytic flux is extreme, lactate formation regenerates NAD+ so glycolysis can continue.";
+      }
+      if (correctId === "gluconeogenesis"){
+        return "In liver during fasting, carbon can be routed toward glucose production. This is a context-dependent fate, not the typical muscle sprint fate.";
+      }
+      if (correctId === "alanine"){
+        return "Alanine formation helps shuttle nitrogen and carbon from muscle to liver. It is especially relevant during prolonged exercise or fasting contexts.";
+      }
+      return "Nice.";
+    }
+
+    function fateWhyNot(choiceId){
+      if (choiceId === "acetylCoA"){
+        return "Acetyl-CoA is best when oxygen is plentiful and mitochondria are ready. In low oxygen, you need NAD+ regeneration first.";
+      }
+      if (choiceId === "lactate"){
+        return "Lactate is a strong choice when oxygen is low or glycolytic flux is very high. But not every scenario is anaerobic.";
+      }
+      if (choiceId === "gluconeogenesis"){
+        return "Gluconeogenesis is mainly a liver pathway and depends on hormonal state. It is not the immediate fate in many muscle scenarios.";
+      }
+      if (choiceId === "alanine"){
+        return "Alanine is tied to nitrogen transport and liver cycling. It is not the default fate under simple aerobic conditions.";
+      }
+      return "Try again.";
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    // =========================
+    // EVENTS
+    // =========================
+
+    el("glucoseToggle").addEventListener("click", () => setMode("glucose"));
+    el("glycogenToggle").addEventListener("click", () => setMode("glycogen"));
+
+    el("resetBtn").addEventListener("click", () => {
+      state.score = 0;
+      scoreVal.textContent = "0";
+      setMode(state.mode);
+    });
+
+    el("checkBtn").addEventListener("click", () => checkPathway());
+    el("hintBtn").addEventListener("click", () => hint());
+
+    el("closeOverlayBtn").addEventListener("click", () => overlay.classList.remove("show"));
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.classList.remove("show");
+    });
+
+    // Keyboard support: Enter checks, H hint, R reset, Esc closes modal
+    window.addEventListener("keydown", (e) => {
+      const k = e.key.toLowerCase();
+      if (k === "enter") checkPathway();
+      if (k === "h") hint();
+      if (k === "r") {
+        state.score = 0;
+        scoreVal.textContent = "0";
+        setMode(state.mode);
+      }
+      if (k === "escape") overlay.classList.remove("show");
+    });
+
+    // =========================
+    // INIT
+    // =========================
+
+    setMode("glucose");
+  </script>
 </body>
 </html>
