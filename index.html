@@ -4,19 +4,20 @@
   <meta charset="UTF-8" />
   <title>Glycolysis Builder Game</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
     :root{
       --bg1:#0b1020;
-      --bg2:#121a33;
-      --panel: rgba(255,255,255,0.06);
-      --panel2: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.12);
+      --border: rgba(255,255,255,0.14);
       --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.70);
+      --muted: rgba(255,255,255,0.72);
       --gold:#c9b037;
       --good:#45d483;
       --bad:#ff6b6b;
       --warn:#ffcc66;
+
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.08);
       --shadow: 0 22px 52px rgba(0,0,0,0.45);
       --radius: 18px;
 
@@ -26,6 +27,7 @@
     }
 
     *{ box-sizing: border-box; }
+
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -36,24 +38,49 @@
     }
 
     .wrap{ max-width: 1220px; margin: 0 auto; }
+
     .top{
-      display:flex; gap:14px; align-items:flex-end; justify-content: space-between;
+      display:flex;
+      gap:14px;
+      align-items:flex-end;
+      justify-content: space-between;
       margin-bottom: 12px;
       flex-wrap: wrap;
     }
-    h1{ margin:0; font-size: 26px; letter-spacing: -0.4px; }
-    .sub{ color: var(--muted); font-size: 14px; line-height: 1.35; max-width: 840px; }
 
-    .bar{ display:flex; gap:10px; flex-wrap: wrap; align-items:center; justify-content:flex-end; }
+    h1{
+      margin:0;
+      font-size: 24px;
+      letter-spacing: -0.4px;
+    }
+
+    .sub{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+      max-width: 820px;
+    }
+
+    .bar{
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content:flex-end;
+    }
+
     .pill{
       border:1px solid var(--border);
       background: rgba(255,255,255,0.05);
       padding: 9px 12px;
       border-radius: 999px;
-      display:flex; gap:8px; align-items:center;
+      display:flex;
+      gap:8px;
+      align-items:center;
       font-size: 13px;
     }
-    .pill strong{ color: white; font-weight: 800; }
+    .pill strong{ color: white; font-weight: 900; }
+
     .btn{
       border:1px solid var(--border);
       background: var(--btn);
@@ -61,21 +88,20 @@
       padding: 10px 12px;
       border-radius: 14px;
       cursor: pointer;
-      font-weight: 760;
-      letter-spacing: 0.1px;
+      font-weight: 800;
       user-select:none;
     }
     .btn:hover{ background: var(--btnHover); }
     .btn.primary{
       background: rgba(201,176,55,0.92);
       color: #0b1020;
-      border-color: rgba(201,176,55,0.8);
+      border-color: rgba(201,176,55,0.85);
     }
     .btn.primary:hover{ background: rgba(201,176,55,1); }
 
     .grid{
       display:grid;
-      grid-template-columns: 1.1fr 0.9fr;
+      grid-template-columns: 1.08fr 0.92fr;
       gap: 12px;
     }
     @media (max-width: 1000px){
@@ -89,19 +115,28 @@
       box-shadow: var(--shadow);
       overflow:hidden;
     }
+
     .panelHeader{
       padding: 14px 16px;
       border-bottom: 1px solid var(--border);
-      display:flex; align-items:center; justify-content: space-between; gap: 12px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
       flex-wrap: wrap;
     }
+
     .panelHeader h2{
       margin:0;
       font-size: 15px;
       letter-spacing: -0.2px;
       color: rgba(255,255,255,0.95);
-      display:flex; gap: 10px; align-items:center;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap: wrap;
     }
+
     .tag{
       font-size: 12px;
       padding: 4px 10px;
@@ -111,12 +146,11 @@
       color: var(--muted);
       white-space: nowrap;
     }
+
     .panelBody{ padding: 14px 16px 16px; }
 
     .row{ display:flex; gap:10px; flex-wrap: wrap; align-items:center; }
     .hr{ height:1px; background: var(--border); margin: 12px 0; }
-
-    .instruction{ color: var(--muted); font-size: 14px; line-height: 1.45; }
 
     .toggleGroup{
       display:flex;
@@ -131,7 +165,7 @@
       background: rgba(255,255,255,0.05);
       color: var(--muted);
       border-right: 1px solid var(--border);
-      font-weight: 800;
+      font-weight: 900;
       font-size: 13px;
     }
     .toggle:last-child{ border-right: none; }
@@ -140,23 +174,33 @@
       color: #0b1020;
     }
 
-    .miniGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+    .kbd{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--kbd);
+      font-size: 11px;
+      color: rgba(255,255,255,0.78);
+      font-weight: 900;
+      margin: 0 2px;
+    }
+
+    .helpWrap{
       margin-top: 10px;
-    }
-    @media (max-width: 620px){
-      .miniGrid{ grid-template-columns: 1fr; }
-    }
-    .miniPanel{
-      border:1px solid var(--border);
-      background: rgba(0,0,0,0.18);
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.22);
       border-radius: 16px;
       padding: 10px 12px;
+      display:none;
     }
-    .miniTitle{ font-weight: 850; font-size: 12px; color: rgba(255,255,255,0.92); }
-    .miniText{ margin-top: 4px; font-size: 12px; color: rgba(255,255,255,0.72); line-height: 1.35; }
+    .instruction{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
 
     .statsGrid{
       display:grid;
@@ -174,7 +218,7 @@
       padding: 10px 12px;
     }
     .stat .k{ font-size: 11px; color: rgba(255,255,255,0.70); }
-    .stat .v{ font-weight: 900; font-size: 16px; margin-top: 2px; }
+    .stat .v{ font-weight: 950; font-size: 16px; margin-top: 2px; }
     .stat.good .v{ color: var(--good); }
     .stat.gold .v{ color: rgba(201,176,55,0.98); }
 
@@ -199,6 +243,12 @@
       border-radius: 999px;
       transition: width 160ms ease;
     }
+    .miniText{
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.68);
+      line-height: 1.35;
+    }
 
     /* Slots */
     .slots{
@@ -212,7 +262,7 @@
       background: rgba(0,0,0,0.18);
       border-radius: 16px;
       padding: 10px 12px;
-      min-height: 64px;
+      min-height: 66px;
       display:flex;
       align-items:center;
       justify-content: space-between;
@@ -236,14 +286,14 @@
       display:flex; align-items:center; justify-content:center;
       border:1px solid var(--border);
       background: rgba(255,255,255,0.06);
-      font-weight: 900;
+      font-weight: 950;
     }
     .slotLabel{
       display:flex; flex-direction: column;
       gap: 2px;
     }
     .slotLabel .main{
-      font-weight: 900;
+      font-weight: 950;
       font-size: 12px;
       color: rgba(255,255,255,0.86);
     }
@@ -265,13 +315,13 @@
       padding: 4px 10px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      color: rgba(255,255,255,0.70);
+      color: rgba(255,255,255,0.76);
       background: rgba(255,255,255,0.05);
       white-space: nowrap;
     }
-    .slotBadge.good{ border-color: rgba(69,212,131,0.45); background: rgba(69,212,131,0.10); color: rgba(255,255,255,0.90); }
-    .slotBadge.bad{ border-color: rgba(255,107,107,0.50); background: rgba(255,107,107,0.10); color: rgba(255,255,255,0.90); }
-    .slotBadge.warn{ border-color: rgba(255,204,102,0.45); background: rgba(255,204,102,0.10); color: rgba(255,255,255,0.90); }
+    .slotBadge.good{ border-color: rgba(69,212,131,0.45); background: rgba(69,212,131,0.12); color: rgba(255,255,255,0.92); }
+    .slotBadge.bad{ border-color: rgba(255,107,107,0.55); background: rgba(255,107,107,0.12); color: rgba(255,255,255,0.92); }
+    .slotBadge.warn{ border-color: rgba(255,204,102,0.50); background: rgba(255,204,102,0.12); color: rgba(255,255,255,0.92); }
 
     /* Cards */
     .card{
@@ -284,15 +334,21 @@
       gap: 5px;
       cursor: grab;
       user-select:none;
-      max-width: 520px;
+      max-width: 560px;
     }
     .card:active{ cursor: grabbing; }
-
+    .card.selected{
+      outline: 2px solid rgba(201,176,55,0.85);
+      background: rgba(201,176,55,0.10);
+    }
     .card .name{
-      font-weight: 900;
+      font-weight: 950;
       font-size: 14px;
       color: rgba(255,255,255,0.95);
-      display:flex; gap: 8px; align-items:center; flex-wrap: wrap;
+      display:flex;
+      gap: 8px;
+      align-items:center;
+      flex-wrap: wrap;
     }
     .chip{
       font-size: 11px;
@@ -301,20 +357,15 @@
       border:1px solid var(--border);
       background: rgba(0,0,0,0.16);
       color: rgba(255,255,255,0.74);
-      font-weight: 850;
+      font-weight: 900;
     }
     .chip.gold{ border-color: rgba(201,176,55,0.55); color: rgba(201,176,55,0.98); }
     .chip.good{ border-color: rgba(69,212,131,0.45); color: rgba(69,212,131,0.96); }
-    .chip.bad{ border-color: rgba(255,107,107,0.55); color: rgba(255,107,107,0.96); }
 
     .card .meta{
       font-size: 12px;
-      color: rgba(255,255,255,0.68);
+      color: rgba(255,255,255,0.70);
       line-height: 1.35;
-    }
-    .card.selected{
-      outline: 2px solid rgba(201,176,55,0.85);
-      background: rgba(201,176,55,0.10);
     }
 
     .pool{
@@ -336,7 +387,7 @@
       background: rgba(0,0,0,0.18);
       border-radius: 16px;
       padding: 10px 12px;
-      color: rgba(255,255,255,0.84);
+      color: rgba(255,255,255,0.86);
       font-size: 13px;
       line-height: 1.4;
       display:flex;
@@ -345,34 +396,22 @@
       flex-wrap: wrap;
       align-items:flex-start;
     }
-    .status.good{ border-color: rgba(69,212,131,0.45); background: rgba(69,212,131,0.10); }
-    .status.bad{ border-color: rgba(255,107,107,0.5); background: rgba(255,107,107,0.10); }
-    .status.warn{ border-color: rgba(255,204,102,0.45); background: rgba(255,204,102,0.10); }
+    .status.good{ border-color: rgba(69,212,131,0.45); background: rgba(69,212,131,0.12); }
+    .status.bad{ border-color: rgba(255,107,107,0.55); background: rgba(255,107,107,0.12); }
+    .status.warn{ border-color: rgba(255,204,102,0.50); background: rgba(255,204,102,0.12); }
     .status .rightNote{
-      color: rgba(255,255,255,0.68);
+      color: rgba(255,255,255,0.72);
       font-size: 12px;
       white-space: nowrap;
     }
 
-    .kbd{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding: 2px 6px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--kbd);
-      font-size: 11px;
-      color: rgba(255,255,255,0.78);
-      font-weight: 850;
-      margin: 0 2px;
-    }
-
-    /* Overlay modal */
+    /* Overlay modal, fixed readability */
     .overlay{
       position: fixed;
       inset:0;
-      background: rgba(0,0,0,0.62);
+      background: rgba(0,0,0,0.80);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       display:none;
       align-items:center;
       justify-content:center;
@@ -380,29 +419,40 @@
       z-index: 30;
     }
     .overlay.show{ display:flex; }
+
     .modal{
-      width: min(920px, 100%);
+      width: min(900px, 100%);
+      max-height: min(86vh, 780px);
+      overflow: hidden;
       border-radius: 22px;
-      border:1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.05));
-      box-shadow: 0 30px 70px rgba(0,0,0,0.6);
-      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.16);
+      background: rgba(16, 20, 38, 0.97);
+      box-shadow: 0 30px 90px rgba(0,0,0,0.75);
     }
     .modalHeader{
       padding: 16px 18px;
-      border-bottom: 1px solid var(--border);
-      display:flex; align-items:center; justify-content: space-between; gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.14);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .modalHeader h3{ margin:0; font-size: 16px; }
-    .modalBody{ padding: 16px 18px 18px; }
+    .modalBody{
+      padding: 16px 18px 18px;
+      overflow: auto;
+    }
+
     .scenario{
-      border:1px solid var(--border);
-      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.06);
       border-radius: 18px;
       padding: 12px 14px;
       margin-bottom: 12px;
+      color: rgba(255,255,255,0.94);
     }
+
     .choices{
       display:grid;
       grid-template-columns: 1fr 1fr;
@@ -411,18 +461,30 @@
     @media (max-width: 720px){
       .choices{ grid-template-columns: 1fr; }
     }
+
     .choice{
-      border:1px solid var(--border);
-      background: rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.07);
       border-radius: 16px;
       padding: 12px 12px;
       cursor:pointer;
       transition: 120ms ease;
       user-select:none;
     }
-    .choice:hover{ background: rgba(255,255,255,0.10); transform: translateY(-1px); }
-    .choice .ctitle{ font-weight: 900; }
-    .choice .cmeta{ font-size: 12px; color: rgba(255,255,255,0.70); margin-top: 4px; line-height: 1.35; }
+    .choice:hover{
+      background: rgba(255,255,255,0.12);
+      transform: translateY(-1px);
+    }
+    .choice .ctitle{
+      font-weight: 950;
+      color: rgba(255,255,255,0.96);
+    }
+    .choice .cmeta{
+      font-size: 12px;
+      color: rgba(255,255,255,0.80);
+      margin-top: 4px;
+      line-height: 1.35;
+    }
 
     /* Toast */
     .toast{
@@ -433,16 +495,15 @@
       padding: 10px 12px;
       border-radius: 14px;
       border:1px solid var(--border);
-      background: rgba(0,0,0,0.50);
-      color: rgba(255,255,255,0.92);
+      background: rgba(0,0,0,0.55);
+      color: rgba(255,255,255,0.94);
       font-size: 13px;
       box-shadow: 0 18px 45px rgba(0,0,0,0.55);
       z-index: 60;
       display:none;
       max-width: min(680px, 92vw);
     }
-    .toast.show{ display:block; animation: pop 140ms ease; }
-    @keyframes pop{ from{ transform: translateX(-50%) translateY(6px); opacity:0; } to{ transform: translateX(-50%) translateY(0); opacity:1; } }
+    .toast.show{ display:block; }
 
     /* Confetti canvas */
     #confetti{
@@ -464,16 +525,16 @@
       <div>
         <h1>Glycolysis Builder</h1>
         <div class="sub">
-          Drag steps into the correct order. Toggle glucose vs glycogen. Watch ATP and NADH update as you build.
-          Then do a quick finale on pyruvate fate.
+          Build the pathway. See ATP and NADH update. Finale: pyruvate fate.
         </div>
       </div>
 
       <div class="bar">
         <div class="pill"><strong>Score</strong> <span id="scoreVal">0</span></div>
-        <div class="pill"><strong>Streak</strong> <span id="streakVal">0</span></div>
         <div class="pill"><strong>Time</strong> <span id="timeVal">0:00</span></div>
+        <div class="pill"><strong>Badges</strong> <span id="badgesVal">0</span></div>
 
+        <button class="btn" id="helpBtn" title="Show or hide instructions">Help</button>
         <button class="btn" id="soundBtn" title="Toggle sound">Sound: On</button>
         <button class="btn" id="confettiBtn" title="Toggle confetti">Confetti: On</button>
 
@@ -489,14 +550,19 @@
       <!-- Builder -->
       <div class="panel">
         <div class="panelHeader">
-          <h2>Build the pathway <span class="tag" id="modeTag">Study Mode</span> <span class="tag" id="startTag">Start: Glucose</span></h2>
+          <h2>
+            Build the pathway
+            <span class="tag" id="startTag">Start: Glucose</span>
+            <span class="tag" id="modeTag">Study</span>
+          </h2>
+
           <div class="row">
             <div class="toggleGroup" aria-label="Start substrate toggle">
               <div class="toggle active" id="glucoseToggle">Glucose</div>
               <div class="toggle" id="glycogenToggle">Glycogen</div>
             </div>
 
-            <div class="toggleGroup" aria-label="Game mode toggle">
+            <div class="toggleGroup" aria-label="Mode toggle">
               <div class="toggle active" id="studyToggle">Study</div>
               <div class="toggle" id="challengeToggle">Challenge</div>
             </div>
@@ -504,24 +570,12 @@
         </div>
 
         <div class="panelBody">
-          <div class="instruction">
-            Drag cards into slots. Or use keyboard:
-            click a card to select, then click a slot to place. Return a card to the pool by double clicking it.
-            Check with <span class="kbd">Enter</span>, hint with <span class="kbd">H</span>, reset with <span class="kbd">R</span>.
-          </div>
-
-          <div class="miniGrid">
-            <div class="miniPanel">
-              <div class="miniTitle">What to focus on</div>
-              <div class="miniText" id="focusText">
-                Anchor the order with irreversible steps (HK, PFK 1, PK). NADH is made at GAPDH. ATP is made at PGK and PK.
-              </div>
-            </div>
-            <div class="miniPanel">
-              <div class="miniTitle">Start note</div>
-              <div class="miniText" id="startNote">
-                Starting from glucose: invest 2 ATP, make 4 ATP, net 2 ATP. NADH = 2.
-              </div>
+          <div class="helpWrap" id="helpWrap">
+            <div class="instruction">
+              Drag cards into slots. Or click a card to select, then click a slot to place.
+              Double click a placed card to send it back to the pool.
+              Keyboard: <span class="kbd">Enter</span> checks, <span class="kbd">H</span> hint, <span class="kbd">R</span> reset, <span class="kbd">U</span> undo.
+              Goal: correct order and energy logic. Finish to unlock the pyruvate finale.
             </div>
           </div>
 
@@ -545,7 +599,9 @@
           </div>
 
           <div class="progressWrap">
-            <div class="miniTitle">Progress</div>
+            <div class="miniText" id="startNote">
+              Starting from glucose: invest 2 ATP, make 4 ATP, net 2 ATP. NADH = 2.
+            </div>
             <div class="progressBar" aria-label="Progress bar">
               <div class="progressFill" id="progressFill"></div>
             </div>
@@ -566,26 +622,19 @@
       <!-- Pool -->
       <div class="panel">
         <div class="panelHeader">
-          <h2>Card pool <span class="tag" id="poolTag">Click to place</span></h2>
-          <div class="tag" id="badgesTag">Badges: 0</div>
+          <h2>Card pool <span class="tag">Drag or click</span></h2>
+          <div class="tag" id="poolCount">0 cards</div>
         </div>
-        <div class="panelBody">
-          <div class="instruction">
-            Drag a card into a slot. Or click a card, then click a slot.
-            If you want to change wording, search for <span class="kbd">TEACHER SETTINGS</span> in the code.
-          </div>
 
+        <div class="panelBody">
           <div class="pool">
             <div class="poolGrid" id="pool"></div>
           </div>
 
           <div class="hr"></div>
 
-          <div class="miniPanel">
-            <div class="miniTitle">Quick badges students like</div>
-            <div class="miniText" id="badgeList">
-              First Try, No Hints, Fast Finish, Perfect 3x.
-            </div>
+          <div class="instruction" style="color: rgba(255,255,255,0.66);">
+            Short version: HK and PFK use ATP. GAPDH makes NADH. PGK and PK make ATP. Glycogen entry skips the HK ATP cost.
           </div>
         </div>
       </div>
@@ -598,22 +647,15 @@
       <div class="modalHeader">
         <h3>Finale: fate of pyruvate</h3>
         <div class="row">
-          <span class="tag" id="finaleTag">Unlocked</span>
           <button class="btn" id="newScenarioBtn">New scenario</button>
           <button class="btn" id="closeOverlayBtn">Close</button>
         </div>
       </div>
       <div class="modalBody">
         <div class="scenario" id="scenarioBox"></div>
-
         <div class="choices" id="choices"></div>
-
         <div class="status warn" id="finaleFeedback" style="margin-top: 12px;">
           Pick the best fate for pyruvate based on the scenario.
-        </div>
-
-        <div class="miniText" style="margin-top: 10px;">
-          Tip: when oxygen is available, route to acetyl CoA for higher ATP. When oxygen is limited or demand is extreme, lactate regenerates NAD+.
         </div>
       </div>
     </div>
@@ -624,92 +666,30 @@
     // TEACHER SETTINGS
     // =========================
     const SETTINGS = {
-      // Scoring
-      scorePerfectBase: 30,
-      scorePerfectDecay: 5,      // reduce bonus after each failed check
-      scoreWrongCheck: -4,
+      scorePerfectBase: 25,
+      scorePerfectDecay: 5,
+      scoreWrongCheck: -3,
       scoreHint: -1,
-      scoreFinaleCorrect: 12,
+      scoreFinaleCorrect: 10,
       scoreFinaleWrong: -2,
-
-      // Hints
       hintsStudy: 3,
       hintsChallenge: 1,
-
-      // Timer thresholds for badges (seconds)
-      badgeFastFinishUnder: 90,
-
-      // Confetti intensity
-      confettiParticles: 150,
-
-      // Challenge mode tweaks
-      challengeNoPerSlotHelpUntilCheck: true
+      confettiParticles: 130
     };
 
-    // Compact pathway (clean for students). If you want the full 10 steps, tell me and I will swap it in.
-    // Each card has effect tags so energy accounting updates live.
+    // Compact pathway (easier for your level). Glycogen mode skips HK (bypass ATP cost).
     const CARDS = [
-      {
-        id: "start_glucose",
-        name: "Start: Glucose",
-        meta: "Glucose is available in cytosol.",
-        chips: ["START"],
-        onlyWhen: "glucose",
-        effects: {}
-      },
-      {
-        id: "start_glycogen",
-        name: "Start: Glycogen entry",
-        meta: "Glycogen -> G1P -> G6P. Bypasses HK ATP cost.",
-        chips: ["START", "BYPASS HK"],
-        onlyWhen: "glycogen",
-        effects: {}
-      },
-      {
-        id: "hk",
-        name: "Hexokinase (HK)",
-        meta: "Glucose -> G6P. ATP used. Traps glucose in cell.",
-        chips: ["ATP USE", "IRREV"],
-        effects: { atpUsed: 1 }
-      },
-      {
-        id: "pfk",
-        name: "PFK 1",
-        meta: "F6P -> F1,6BP. ATP used. Major control point.",
-        chips: ["ATP USE", "CONTROL", "IRREV"],
-        effects: { atpUsed: 1 }
-      },
-      {
-        id: "split",
-        name: "Split and rearrange",
-        meta: "F1,6BP -> 2 x triose phosphates. Sets up payoff.",
-        chips: ["2X"],
-        effects: {}
-      },
-      {
-        id: "gapdh",
-        name: "GAPDH",
-        meta: "G3P -> 1,3BPG. NAD+ -> NADH.",
-        chips: ["NADH"],
-        effects: { nadh: 2 } // happens twice per glucose
-      },
-      {
-        id: "pgk",
-        name: "Phosphoglycerate kinase (PGK)",
-        meta: "1,3BPG -> 3PG. ATP made (substrate level).",
-        chips: ["ATP MAKE"],
-        effects: { atpMade: 2 } // happens twice
-      },
-      {
-        id: "pk",
-        name: "Pyruvate kinase (PK)",
-        meta: "PEP -> Pyruvate. ATP made. Irreversible.",
-        chips: ["ATP MAKE", "IRREV"],
-        effects: { atpMade: 2 } // happens twice
-      }
+      { id:"start_glucose", name:"Start: Glucose", meta:"Glucose is available in cytosol.", chips:["START"], onlyWhen:"glucose", effects:{} },
+      { id:"start_glycogen", name:"Start: Glycogen entry", meta:"Glycogen -> G1P -> G6P. Bypasses HK ATP cost.", chips:["START","BYPASS HK"], onlyWhen:"glycogen", effects:{} },
+
+      { id:"hk", name:"Hexokinase (HK)", meta:"Glucose -> G6P. ATP used. Traps glucose in cell.", chips:["ATP USE","IRREV"], effects:{ atpUsed: 1 } },
+      { id:"pfk", name:"PFK 1", meta:"F6P -> F1,6BP. ATP used. Major control point.", chips:["ATP USE","CONTROL","IRREV"], effects:{ atpUsed: 1 } },
+      { id:"split", name:"Split and rearrange", meta:"F1,6BP -> 2 x triose phosphates. Sets up payoff.", chips:["2X"], effects:{} },
+      { id:"gapdh", name:"GAPDH", meta:"G3P -> 1,3BPG. NAD+ -> NADH (happens twice).", chips:["NADH"], effects:{ nadh: 2 } },
+      { id:"pgk", name:"PGK", meta:"1,3BPG -> 3PG. ATP made (happens twice).", chips:["ATP MAKE"], effects:{ atpMade: 2 } },
+      { id:"pk", name:"Pyruvate kinase (PK)", meta:"PEP -> Pyruvate. ATP made (happens twice).", chips:["ATP MAKE","IRREV"], effects:{ atpMade: 2 } }
     ];
 
-    // Correct order differs by start
     const ORDER = {
       glucose: ["start_glucose", "hk", "pfk", "split", "gapdh", "pgk", "pk"],
       glycogen: ["start_glycogen", "pfk", "split", "gapdh", "pgk", "pk"]
@@ -717,28 +697,19 @@
 
     const START_NOTES = {
       glucose: "Starting from glucose: invest 2 ATP, make 4 ATP, net 2 ATP. NADH = 2.",
-      glycogen: "Starting from glycogen: you bypass the HK ATP cost, so net ATP is higher by 1 (net 3). NADH = 2."
+      glycogen: "Starting from glycogen: bypass HK ATP cost, so net ATP is higher by 1 (net 3). NADH = 2."
     };
 
-    // Finale: only two fates
     const FATE_CHOICES = [
-      {
-        id: "acetylCoA",
-        title: "Acetyl CoA (aerobic)",
-        meta: "Oxygen available. Pyruvate enters mitochondria (PDH) to support aerobic ATP production."
-      },
-      {
-        id: "lactate",
-        title: "Lactate (anaerobic or very high flux)",
-        meta: "Regenerates NAD+ so glycolysis can continue when oxygen is limited or demand is very high."
-      }
+      { id:"acetylCoA", title:"Acetyl CoA (aerobic)", meta:"Oxygen available. Pyruvate enters mitochondria (PDH) for aerobic ATP production." },
+      { id:"lactate", title:"Lactate (anaerobic or very high flux)", meta:"Regenerates NAD+ so glycolysis can continue when oxygen is limited or demand is very high." }
     ];
 
     const SCENARIOS = [
-      { id: "highO2", prompt: "Oxygen is plentiful and mitochondria are ready. You want maximum ATP yield.", correct: "acetylCoA" },
-      { id: "lowO2", prompt: "Very low oxygen during an all out sprint. You must regenerate NAD+ fast.", correct: "lactate" },
-      { id: "steady", prompt: "Moderate intensity with steady breathing. Oxygen is adequate.", correct: "acetylCoA" },
-      { id: "allOut", prompt: "All out effort. Glycolysis is flying and oxygen delivery cannot keep up.", correct: "lactate" }
+      { id:"highO2", prompt:"Oxygen is plentiful and mitochondria are ready. You want maximum ATP yield.", correct:"acetylCoA" },
+      { id:"steady", prompt:"Moderate intensity with steady breathing. Oxygen is adequate.", correct:"acetylCoA" },
+      { id:"lowO2", prompt:"Very low oxygen during an all out sprint. You must regenerate NAD+ fast.", correct:"lactate" },
+      { id:"allOut", prompt:"All out effort. Glycolysis is flying and oxygen delivery cannot keep up.", correct:"lactate" }
     ];
 
     // =========================
@@ -746,30 +717,24 @@
     // =========================
     const state = {
       start: "glucose",
-      mode: "study", // study or challenge
+      mode: "study",
       score: 0,
-      streak: 0,
       badges: new Set(),
       attempts: 0,
       hintsLeft: SETTINGS.hintsStudy,
       hintLevel: 0,
       placedBySlot: [],
-      slotFeedback: [],
-      history: [], // undo stack: {cardId, from, to, toSlotIndex}
+      history: [],
       selectedCardId: null,
 
-      // Timer
       timerOn: false,
       t0: 0,
       elapsed: 0,
       timerHandle: 0,
 
-      // Finale
       finaleUnlocked: false,
       currentScenario: null,
-      finaleSolvedCount: 0,
 
-      // UX
       soundOn: true,
       confettiOn: true
     };
@@ -780,12 +745,14 @@
     const el = (id) => document.getElementById(id);
 
     const scoreVal = el("scoreVal");
-    const streakVal = el("streakVal");
     const timeVal = el("timeVal");
-    const badgesTag = el("badgesTag");
+    const badgesVal = el("badgesVal");
+    const poolCount = el("poolCount");
+
     const startTag = el("startTag");
     const modeTag = el("modeTag");
     const startNote = el("startNote");
+
     const statusBox = el("statusBox");
     const statusMsg = el("statusMsg");
     const hintNote = el("hintNote");
@@ -798,6 +765,7 @@
     const progressFill = el("progressFill");
     const progressText = el("progressText");
 
+    const helpWrap = el("helpWrap");
     const pool = el("pool");
     const slots = el("slots");
 
@@ -831,9 +799,15 @@
       return a;
     }
 
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add("show");
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toast.classList.remove("show"), 1600);
+    }
+
     function beep(type){
       if (!state.soundOn) return;
-      // Simple WebAudio beeps, no external files
       try{
         const ac = new (window.AudioContext || window.webkitAudioContext)();
         const o = ac.createOscillator();
@@ -841,10 +815,9 @@
         o.connect(g);
         g.connect(ac.destination);
 
-        let f = 440, dur = 0.08, gain = 0.06;
-        if (type === "good"){ f = 660; dur = 0.10; }
-        if (type === "bad"){ f = 220; dur = 0.10; }
-        if (type === "click"){ f = 520; dur = 0.05; gain = 0.04; }
+        let f = 520, dur = 0.06, gain = 0.04;
+        if (type === "good"){ f = 680; dur = 0.10; gain = 0.06; }
+        if (type === "bad"){ f = 220; dur = 0.10; gain = 0.06; }
 
         o.frequency.value = f;
         o.type = "sine";
@@ -852,16 +825,7 @@
 
         o.start();
         setTimeout(() => { o.stop(); ac.close(); }, Math.floor(dur * 1000));
-      } catch {
-        // ignore
-      }
-    }
-
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.classList.add("show");
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(() => toast.classList.remove("show"), 1600);
+      } catch {}
     }
 
     function setStatus(msg, kind){
@@ -876,22 +840,25 @@
       finaleFeedback.textContent = msg;
     }
 
-    function formatTime(sec){
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${m}:${String(s).padStart(2,"0")}`;
-    }
-
     // =========================
     // CONFETTI
     // =========================
+    function resizeConfetti(){
+      confettiCanvas.width = Math.floor(window.innerWidth * Math.min(2, window.devicePixelRatio || 1));
+      confettiCanvas.height = Math.floor(window.innerHeight * Math.min(2, window.devicePixelRatio || 1));
+      ctxConf.setTransform(1,0,0,1,0,0);
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      ctxConf.scale(dpr, dpr);
+    }
+    window.addEventListener("resize", resizeConfetti);
+
     function confettiBurst(){
       if (!state.confettiOn) return;
       resizeConfetti();
       confettiCanvas.style.display = "block";
 
-      const W = confettiCanvas.width;
-      const H = confettiCanvas.height;
+      const W = window.innerWidth;
+      const H = window.innerHeight;
 
       const parts = [];
       const n = SETTINGS.confettiParticles;
@@ -905,13 +872,11 @@
           r: 2 + Math.random() * 4,
           a: Math.random() * Math.PI * 2,
           va: -0.2 + Math.random() * 0.4,
-          life: 80 + Math.random() * 80
+          life: 70 + Math.random() * 80
         });
       }
 
-      let frame = 0;
       function tick(){
-        frame++;
         ctxConf.clearRect(0,0,W,H);
         for (const p of parts){
           p.x += p.vx;
@@ -938,29 +903,24 @@
       requestAnimationFrame(tick);
     }
 
-    function resizeConfetti(){
-      confettiCanvas.width = Math.floor(window.innerWidth * Math.min(2, window.devicePixelRatio || 1));
-      confettiCanvas.height = Math.floor(window.innerHeight * Math.min(2, window.devicePixelRatio || 1));
-      ctxConf.setTransform(1,0,0,1,0,0);
-      // Scale drawing back to CSS pixels
-      const dpr = Math.min(2, window.devicePixelRatio || 1);
-      ctxConf.scale(dpr, dpr);
-    }
-
-    window.addEventListener("resize", resizeConfetti);
-
     // =========================
     // TIMER
     // =========================
+    function formatTime(sec){
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${String(s).padStart(2,"0")}`;
+    }
+
     function timerStart(){
       if (state.timerOn) return;
       state.timerOn = true;
       state.t0 = performance.now();
       state.elapsed = 0;
-      updateTimeUI();
+      timeVal.textContent = "0:00";
       state.timerHandle = setInterval(() => {
         state.elapsed = (performance.now() - state.t0) / 1000;
-        updateTimeUI();
+        timeVal.textContent = formatTime(state.elapsed);
       }, 200);
     }
 
@@ -968,15 +928,10 @@
       state.timerOn = false;
       clearInterval(state.timerHandle);
       state.timerHandle = 0;
-      updateTimeUI();
-    }
-
-    function updateTimeUI(){
-      timeVal.textContent = formatTime(state.elapsed);
     }
 
     // =========================
-    // CARDS AND ORDER
+    // GAME DATA HELPERS
     // =========================
     function getActiveCards(){
       return CARDS.filter(c => !c.onlyWhen || c.onlyWhen === state.start);
@@ -993,10 +948,8 @@
     function chipsHTML(card){
       const chips = (card.chips || []).map(ch => {
         let cls = "chip";
-        if (ch.includes("ATP")) cls += " good";
-        if (ch.includes("IRREV") || ch.includes("CONTROL")) cls += " gold";
-        if (ch.includes("BYPASS")) cls += " gold";
-        if (ch.includes("NADH")) cls += " good";
+        if (ch.includes("ATP") || ch.includes("NADH")) cls += " good";
+        if (ch.includes("IRREV") || ch.includes("CONTROL") || ch.includes("BYPASS")) cls += " gold";
         return `<span class="${cls}">${escapeHtml(ch)}</span>`;
       }).join("");
       return chips;
@@ -1009,7 +962,6 @@
       slots.innerHTML = "";
       const order = getOrder();
       state.placedBySlot = new Array(order.length).fill(null);
-      state.slotFeedback = new Array(order.length).fill("empty");
 
       for (let i = 0; i < order.length; i++){
         const slot = document.createElement("div");
@@ -1070,7 +1022,6 @@
           if (cardId) placeCardIntoSlot(cardId, i, "drag");
         });
 
-        // click to place if selected card exists
         slot.addEventListener("click", () => {
           if (state.selectedCardId){
             placeCardIntoSlot(state.selectedCardId, i, "click");
@@ -1083,10 +1034,11 @@
 
     function buildPool(){
       pool.innerHTML = "";
-      const shuffled = shuffle(getActiveCards());
-      for (const c of shuffled){
+      const active = shuffle(getActiveCards());
+      for (const c of active){
         pool.appendChild(makeCard(c));
       }
+      poolCount.textContent = `${active.length} cards`;
 
       pool.addEventListener("dragover", (e) => e.preventDefault());
       pool.addEventListener("drop", (e) => {
@@ -1131,22 +1083,17 @@
       return d;
     }
 
-    function selectCard(cardId){
-      // toggle selection
-      if (state.selectedCardId === cardId){
-        state.selectedCardId = null;
-      } else {
-        state.selectedCardId = cardId;
-      }
-      refreshSelectionUI();
-    }
-
     function refreshSelectionUI(){
       document.querySelectorAll(".card").forEach(c => c.classList.remove("selected"));
       if (state.selectedCardId){
         const elCard = findCardElement(state.selectedCardId);
         if (elCard) elCard.classList.add("selected");
       }
+    }
+
+    function selectCard(cardId){
+      state.selectedCardId = (state.selectedCardId === cardId) ? null : cardId;
+      refreshSelectionUI();
     }
 
     function findCardElement(cardId){
@@ -1182,33 +1129,25 @@
       }
 
       if (h.type === "place"){
-        // remove from toSlot, restore old states
         if (h.toSlotIndex != null){
           clearSlot(h.toSlotIndex);
         }
         if (h.fromSlotIndex != null){
-          // was moved from another slot, put back
           placeCardIntoSlot(h.cardId, h.fromSlotIndex, "undo", true);
         } else {
-          // was from pool, send back to pool
           moveCardToPool(h.cardId, false);
         }
-        // restore bumped card
         if (h.bumpedCardId){
-          // bumped card went to pool, attempt to restore into slot
           placeCardIntoSlot(h.bumpedCardId, h.toSlotIndex, "undo", true);
         }
       }
 
       if (h.type === "toPool"){
-        // try to put it back where it was
         placeCardIntoSlot(h.cardId, h.fromSlot, "undo", true);
       }
 
       computeEnergyAndProgress();
-      if (state.selectedCardId && !findCardElement(state.selectedCardId)){
-        state.selectedCardId = null;
-      }
+      state.selectedCardId = null;
       refreshSelectionUI();
       showToast("Undo.");
       beep("click");
@@ -1221,7 +1160,6 @@
       const slotContent = document.querySelector(`.slot[data-slot-index="${slotIndex}"] [data-dropzone="slot"]`);
       if (slotContent) slotContent.innerHTML = "";
       state.placedBySlot[slotIndex] = null;
-      state.slotFeedback[slotIndex] = "empty";
       setSlotBadge(slotIndex, "warn", "Empty");
     }
 
@@ -1231,13 +1169,13 @@
 
       timerStart();
 
-      // already in some slot
+      // If already in another slot, clear that slot
       const existingSlot = findCardSlotIndex(cardId);
       if (existingSlot !== -1){
         clearSlot(existingSlot);
       }
 
-      // bump existing card in target slot back to pool
+      // If target has a card, bump to pool
       const existingInTarget = state.placedBySlot[slotIndex];
       let bumpedCardId = null;
       if (existingInTarget){
@@ -1246,16 +1184,15 @@
         clearSlot(slotIndex);
       }
 
-      // place
+      // Place
       state.placedBySlot[slotIndex] = cardId;
       const slotContent = document.querySelector(`.slot[data-slot-index="${slotIndex}"] [data-dropzone="slot"]`);
       slotContent.innerHTML = "";
       slotContent.appendChild(cardEl);
 
-      // record history for undo (skip during undo itself)
       if (source !== "undo"){
         pushHistory({
-          type: "place",
+          type:"place",
           cardId,
           fromSlotIndex: existingSlot !== -1 ? existingSlot : null,
           toSlotIndex: slotIndex,
@@ -1263,29 +1200,18 @@
         });
       }
 
-      // if click placement, clear selection
       if (source === "click"){
         state.selectedCardId = null;
         refreshSelectionUI();
-      } else {
-        refreshSelectionUI();
       }
 
-      // slot badge behavior
       if (!silent){
-        setStatus("Nice. Keep building, then check.", "warn");
+        setStatus("Keep going, then check when ready.", "warn");
+        beep("click");
       }
 
+      setSlotBadge(slotIndex, "warn", "Placed");
       computeEnergyAndProgress();
-
-      if (!silent) beep("click");
-      if (state.mode === "challenge" && SETTINGS.challengeNoPerSlotHelpUntilCheck){
-        // keep badges neutral until check
-        setSlotBadge(slotIndex, "warn", "Placed");
-      } else {
-        // show "Placed" until check
-        setSlotBadge(slotIndex, "warn", "Placed");
-      }
     }
 
     function moveCardToPool(cardId, clearFromSlot){
@@ -1319,9 +1245,6 @@
         nadh += (card.effects.nadh || 0);
       }
 
-      // glycogen bypass is explained in start card, but net reflects the placements
-      // Special case: in glycogen mode, HK card is not part of correct order. But if you include it by dragging (still possible if not filtered). We filter it out by start, so fine.
-
       const netAtp = atpMade - atpUsed;
 
       atpUsedVal.textContent = String(atpUsed);
@@ -1335,16 +1258,14 @@
       progressFill.style.width = pct + "%";
       progressText.textContent = filled === 0 ? "Place cards to start." : `Placed ${filled} of ${total}.`;
 
-      // Update hint note
       hintNote.textContent = `Hints left: ${state.hintsLeft}`;
-
-      // Tag updates
       startTag.textContent = "Start: " + (state.start === "glucose" ? "Glucose" : "Glycogen");
-      modeTag.textContent = (state.mode === "study") ? "Study Mode" : "Challenge Mode";
+      modeTag.textContent = (state.mode === "study") ? "Study" : "Challenge";
+      startNote.textContent = START_NOTES[state.start];
     }
 
     // =========================
-    // CHECK PATHWAY
+    // SCORING AND BADGES
     // =========================
     function updateScore(delta){
       state.score += delta;
@@ -1352,32 +1273,23 @@
       scoreVal.textContent = String(state.score);
     }
 
-    function updateStreak(ok){
-      if (ok){
-        state.streak += 1;
-        streakVal.textContent = String(state.streak);
-      } else {
-        state.streak = 0;
-        streakVal.textContent = "0";
-      }
-    }
-
-    function awardBadge(key, label){
+    function awardBadge(key){
       if (state.badges.has(key)) return;
       state.badges.add(key);
-      badgesTag.textContent = "Badges: " + state.badges.size;
-      showToast("Badge earned: " + label);
-      beep("good");
+      badgesVal.textContent = String(state.badges.size);
+      showToast("Badge earned: " + key);
     }
 
+    // =========================
+    // CHECK PATHWAY
+    // =========================
     function checkPathway(){
       const correct = getOrder();
       const placed = state.placedBySlot;
 
-      // empty slots
       const emptyCount = placed.filter(x => !x).length;
       if (emptyCount > 0){
-        setStatus(`You still have ${emptyCount} empty slot(s). Fill them first.`, "warn");
+        setStatus(`Fill all slots first. Empty slots: ${emptyCount}.`, "warn");
         beep("bad");
         return;
       }
@@ -1386,57 +1298,29 @@
 
       let right = 0;
       for (let i = 0; i < correct.length; i++){
-        if (placed[i] === correct[i]) right++;
-      }
-
-      // per slot feedback
-      for (let i = 0; i < correct.length; i++){
         const ok = placed[i] === correct[i];
-        if (ok){
-          state.slotFeedback[i] = "good";
-          setSlotBadge(i, "good", "Correct");
-        } else {
-          state.slotFeedback[i] = "bad";
-          setSlotBadge(i, "bad", "Wrong");
-        }
+        if (ok) right++;
+        setSlotBadge(i, ok ? "good" : "bad", ok ? "Correct" : "Wrong");
       }
 
       if (right === correct.length){
         const bonus = Math.max(10, SETTINGS.scorePerfectBase - (state.attempts - 1) * SETTINGS.scorePerfectDecay);
         updateScore(bonus);
-        updateStreak(true);
 
-        // unlock finale
-        state.finaleUnlocked = true;
-
-        // badges
-        if (state.attempts === 1) awardBadge("first_try", "First Try");
-        if (state.hintLevel === 0) awardBadge("no_hints", "No Hints");
-        if (state.elapsed > 0 && state.elapsed <= SETTINGS.badgeFastFinishUnder) awardBadge("fast_finish", "Fast Finish");
-        if (state.streak >= 3) awardBadge("perfect_3", "Perfect 3x");
+        if (state.attempts === 1) awardBadge("First Try");
+        if (state.hintLevel === 0) awardBadge("No Hints");
+        if (state.elapsed > 0 && state.elapsed <= 90) awardBadge("Fast Finish");
 
         setStatus(`Correct. Bonus +${bonus}. Finale unlocked.`, "good");
         beep("good");
         confettiBurst();
+
+        state.finaleUnlocked = true;
         openFinale();
       } else {
         updateScore(SETTINGS.scoreWrongCheck);
-        updateStreak(false);
-
-        // hints guidance
-        const miss = correct.length - right;
-        let msg = `Not quite. You have ${right}/${correct.length} correct. ${miss} misplaced.`;
-        if (state.mode === "study"){
-          msg += " Try hint or move your anchors (HK, PFK 1, PK).";
-        } else {
-          msg += " Challenge mode: fewer hints. Rebuild quickly.";
-        }
-        setStatus(msg, "bad");
+        setStatus(`Not quite. You have ${right}/${correct.length} correct. Adjust and try again.`, "bad");
         beep("bad");
-
-        if (state.mode === "study" && state.attempts >= 3){
-          setStatus(msg + " Tip: NADH is made at GAPDH. ATP is made at PGK and PK.", "bad");
-        }
       }
     }
 
@@ -1454,11 +1338,11 @@
       updateScore(SETTINGS.scoreHint);
 
       if (state.hintLevel === 1){
-        setStatus("Hint: Put the START card first. Put PFK 1 early. It is the main control point.", "warn");
+        setStatus("Hint: Start card first. PFK 1 is early and is the main control point.", "warn");
       } else if (state.hintLevel === 2){
-        setStatus("Hint: NADH is made at GAPDH. ATP is made at PGK and PK (both happen twice).", "warn");
+        setStatus("Hint: NADH is made at GAPDH. ATP is made at PGK and PK.", "warn");
       } else {
-        setStatus("Hint: Split happens before payoff. The payoff order is GAPDH then PGK then PK.", "warn");
+        setStatus("Hint: Split happens before payoff. Payoff is GAPDH then PGK then PK.", "warn");
       }
       computeEnergyAndProgress();
       beep("click");
@@ -1472,21 +1356,16 @@
     }
 
     function openFinale(){
-      if (!state.finaleUnlocked){
-        setStatus("Finish the pathway first to unlock the finale.", "warn");
-        return;
-      }
-      state.currentScenario = pickScenario();
-      el("finaleTag").textContent = "Unlocked";
+      if (!state.finaleUnlocked) return;
 
+      state.currentScenario = pickScenario();
       scenarioBox.innerHTML = `
-        <div style="font-weight:900; margin-bottom: 6px; color: rgba(255,255,255,0.95);">Scenario</div>
-        <div style="color: rgba(255,255,255,0.80); line-height: 1.45;">${escapeHtml(state.currentScenario.prompt)}</div>
+        <div style="font-weight:950; margin-bottom: 6px;">Scenario</div>
+        <div style="color: rgba(255,255,255,0.88); line-height: 1.45;">${escapeHtml(state.currentScenario.prompt)}</div>
       `;
 
       choicesEl.innerHTML = "";
-      const shuffled = shuffle(FATE_CHOICES);
-      for (const c of shuffled){
+      for (const c of shuffle(FATE_CHOICES)){
         const div = document.createElement("div");
         div.className = "choice";
         div.innerHTML = `
@@ -1507,31 +1386,21 @@
 
       if (choiceId === s.correct){
         updateScore(SETTINGS.scoreFinaleCorrect);
-        state.finaleSolvedCount += 1;
-
-        const explain = (choiceId === "acetylCoA")
-          ? "Correct. Oxygen is available, so pyruvate goes to acetyl CoA for aerobic ATP production."
-          : "Correct. Oxygen is limited or demand is extreme, so lactate regenerates NAD+ to keep glycolysis running.";
-
-        setFinaleStatus(explain + ` +${SETTINGS.scoreFinaleCorrect}.`, "good");
+        setFinaleStatus(`Correct. +${SETTINGS.scoreFinaleCorrect}.`, "good");
         beep("good");
         confettiBurst();
-
-        // small badge if they nail a few finales
-        if (state.finaleSolvedCount >= 3) awardBadge("finale_3", "Finale 3x");
-
       } else {
         updateScore(SETTINGS.scoreFinaleWrong);
         const explain = (choiceId === "acetylCoA")
-          ? "Not quite. That would be best when oxygen is available. In this scenario, you need NAD+ regeneration."
-          : "Not quite. Lactate is best when oxygen is limited or demand is very high. Here, oxygen is adequate for aerobic routing.";
-        setFinaleStatus(explain + ` ${SETTINGS.scoreFinaleWrong}.`, "bad");
+          ? "Not quite. That is best when oxygen is available."
+          : "Not quite. Lactate is best when oxygen is limited or demand is extremely high.";
+        setFinaleStatus(`${explain} ${SETTINGS.scoreFinaleWrong}.`, "bad");
         beep("bad");
       }
     }
 
     // =========================
-    // RESET AND MODE
+    // MODE AND RESET
     // =========================
     function setStart(start){
       state.start = start;
@@ -1540,9 +1409,6 @@
       state.history = [];
       state.selectedCardId = null;
       state.finaleUnlocked = false;
-      state.currentScenario = null;
-
-      startNote.textContent = START_NOTES[start];
 
       el("glucoseToggle").classList.toggle("active", start === "glucose");
       el("glycogenToggle").classList.toggle("active", start === "glycogen");
@@ -1560,12 +1426,6 @@
       el("studyToggle").classList.toggle("active", mode === "study");
       el("challengeToggle").classList.toggle("active", mode === "challenge");
 
-      const focus = (mode === "study")
-        ? "Anchor the order with irreversible steps (HK, PFK 1, PK). NADH is made at GAPDH. ATP is made at PGK and PK."
-        : "Challenge mode: fewer hints. Build fast. Then check.";
-
-      el("focusText").textContent = focus;
-
       computeEnergyAndProgress();
       showToast(mode === "study" ? "Study mode." : "Challenge mode.");
       beep("click");
@@ -1573,26 +1433,24 @@
 
     function resetAll(){
       state.score = 0;
-      state.streak = 0;
       state.badges = new Set();
       state.attempts = 0;
+      state.hintsLeft = (state.mode === "study") ? SETTINGS.hintsStudy : SETTINGS.hintsChallenge;
       state.hintLevel = 0;
       state.history = [];
       state.selectedCardId = null;
       state.finaleUnlocked = false;
-      state.finaleSolvedCount = 0;
 
       scoreVal.textContent = "0";
-      streakVal.textContent = "0";
-      badgesTag.textContent = "Badges: 0";
+      badgesVal.textContent = "0";
 
       timerStop();
-      state.t0 = performance.now();
+      state.timerOn = false;
       state.elapsed = 0;
-      updateTimeUI();
+      timeVal.textContent = "0:00";
 
-      setMode(state.mode);  // resets hints
       setStart(state.start);
+      setStatus("Build your pathway, then click Check. Perfect unlocks the pyruvate finale.", "warn");
       showToast("Reset.");
       beep("click");
     }
@@ -1609,17 +1467,12 @@
     // =========================
     // EVENTS
     // =========================
-    el("glucoseToggle").addEventListener("click", () => setStart("glucose"));
-    el("glycogenToggle").addEventListener("click", () => setStart("glycogen"));
-
-    el("studyToggle").addEventListener("click", () => setMode("study"));
-    el("challengeToggle").addEventListener("click", () => setMode("challenge"));
-
-    el("resetBtn").addEventListener("click", resetAll);
-    el("checkBtn").addEventListener("click", checkPathway);
-    el("hintBtn").addEventListener("click", hint);
-    el("shuffleBtn").addEventListener("click", shufflePool);
-    el("undoBtn").addEventListener("click", undo);
+    el("helpBtn").addEventListener("click", () => {
+      const showing = helpWrap.style.display !== "none";
+      helpWrap.style.display = showing ? "none" : "block";
+      showToast(showing ? "Help hidden." : "Help shown.");
+      beep("click");
+    });
 
     el("soundBtn").addEventListener("click", () => {
       state.soundOn = !state.soundOn;
@@ -1633,22 +1486,25 @@
       showToast(state.confettiOn ? "Confetti on." : "Confetti off.");
     });
 
+    el("glucoseToggle").addEventListener("click", () => setStart("glucose"));
+    el("glycogenToggle").addEventListener("click", () => setStart("glycogen"));
+
+    el("studyToggle").addEventListener("click", () => setMode("study"));
+    el("challengeToggle").addEventListener("click", () => setMode("challenge"));
+
+    el("undoBtn").addEventListener("click", undo);
+    el("shuffleBtn").addEventListener("click", shufflePool);
+    el("hintBtn").addEventListener("click", hint);
+    el("resetBtn").addEventListener("click", resetAll);
+    el("checkBtn").addEventListener("click", checkPathway);
+
     el("closeOverlayBtn").addEventListener("click", () => overlay.classList.remove("show"));
-    el("newScenarioBtn").addEventListener("click", () => {
-      state.currentScenario = pickScenario();
-      scenarioBox.innerHTML = `
-        <div style="font-weight:900; margin-bottom: 6px; color: rgba(255,255,255,0.95);">Scenario</div>
-        <div style="color: rgba(255,255,255,0.80); line-height: 1.45;">${escapeHtml(state.currentScenario.prompt)}</div>
-      `;
-      setFinaleStatus("Pick the best fate for pyruvate based on the scenario.", "warn");
-      beep("click");
-    });
+    el("newScenarioBtn").addEventListener("click", () => openFinale());
 
     overlay.addEventListener("click", (e) => {
       if (e.target === overlay) overlay.classList.remove("show");
     });
 
-    // Keyboard shortcuts
     window.addEventListener("keydown", (e) => {
       const k = e.key.toLowerCase();
       if (k === "enter") checkPathway();
@@ -1673,10 +1529,10 @@
       resizeConfetti();
       el("soundBtn").textContent = "Sound: On";
       el("confettiBtn").textContent = "Confetti: On";
-      badgesTag.textContent = "Badges: 0";
+      badgesVal.textContent = "0";
+      helpWrap.style.display = "none";
       setMode("study");
       setStart("glucose");
-      setStatus("Build your pathway, then click Check. Perfect unlocks the pyruvate finale.", "warn");
       computeEnergyAndProgress();
     }
 
